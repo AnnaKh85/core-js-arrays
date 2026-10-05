@@ -179,6 +179,7 @@ function isValueEqualsIndex(arr) {
  */
 function insertItem(arr, item, index) {
   arr.splice(index, 0, item);
+  return arr;
 }
 
 /**
@@ -223,8 +224,8 @@ function getTail(arr, n) {
  *    doubleArray([0, 1, 2, 3, 4, 5]) => [0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5]
  *    doubleArray([]) => []
  */
-function doubleArray(/* arr */) {
-  throw new Error('Not implemented');
+function doubleArray(arr) {
+  return arr.concat(arr);
 }
 
 /**
@@ -414,8 +415,12 @@ function getFalsyValuesCount(arr) {
  *                              [0,0,0,1,0],
  *                              [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  return Array.from({ length: n }, (row, rowIndex) =>
+    Array.from({ length: n }, (column, columnIndex) =>
+      Number(rowIndex === columnIndex)
+    )
+  );
 }
 
 /**
@@ -494,8 +499,19 @@ function findCommonElements(arr1, arr2) {
  *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => 2
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  return nums.reduce(
+    (state, number, index) => {
+      const sequenceLength =
+        index > 0 && number > nums[index - 1] ? state.current + 1 : 1;
+
+      return {
+        current: sequenceLength,
+        longest: Math.max(state.longest, sequenceLength),
+      };
+    },
+    { current: 0, longest: 0 }
+  ).longest;
 }
 
 /**
@@ -529,8 +545,13 @@ function propagateItemsByPositionIndex(arr) {
  *    shiftArray(['a', 'b', 'c', 'd'], -1) => ['b', 'c', 'd', 'a']
  *    shiftArray([10, 20, 30, 40, 50], -3) => [40, 50, 10, 20, 30]
  */
-function shiftArray(/* arr, n */) {
-  throw new Error('Not implemented');
+function shiftArray(arr, n) {
+  if (arr.length === 0) {
+    return [];
+  }
+
+  const shift = ((n % arr.length) + arr.length) % arr.length;
+  return arr.slice(-shift).concat(arr.slice(0, -shift));
 }
 
 /**
